@@ -1,0 +1,16 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Header-select, .Header-input {
+  width: 150px;
+  font-weight: bold;
+  border: none;
+  padding: 5px 0 0;
+}
+
+.Header-input {
+  border-bottom: black 1px solid;
+}

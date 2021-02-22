@@ -1,0 +1,30 @@
+.Pane {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+}
+
+.Pane-textarea,
+.Pane-preview {
+  width: 100%;
+  min-height: 300px;
+  border: black 1px solid;
+  padding: 5px;
+  margin: 5px 0;
+}
+
+.Pane-textarea {
+  resize: vertical;
+}
+
+.Pane-actions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Pane-float-right-button {
+  margin-left: auto;
+}

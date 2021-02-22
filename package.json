@@ -12,6 +12,7 @@
   "dependencies": {
     "json-templates": "^4.1.0",
     "preact": "^10.0.0",
+    "snarkdown": "^2.0.0",
     "web-ext": "^5.4.1"
   },
   "devDependencies": {

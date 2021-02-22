@@ -1,0 +1,24 @@
+.Button {
+  background: none;
+  border: none;
+  color: navy;
+  cursor: pointer;
+}
+
+.Button:hover {
+  text-decoration: underline;
+}
+
+.Button-float-top-right {
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
+.Button-white {
+  padding: 5px;
+}
+
+.Button-danger {
+  color: red;
+}
