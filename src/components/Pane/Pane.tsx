@@ -2,16 +2,25 @@ import { h, JSX, Fragment } from 'preact';
 import { useState } from 'preact/hooks';
 import snarkdown from 'snarkdown';
 
+import { Button } from '../Button/Button';
+
 import './Pane.css';
 
 interface PaneProps {
   content: string;
   canRemove: boolean;
+  canEdit: boolean;
   onEdit: (nextContent: string) => void;
   onRemove: () => void;
 }
 
-export function Pane({ content, onEdit, onRemove, canRemove }: PaneProps) {
+export function Pane({
+  content,
+  onEdit,
+  onRemove,
+  canRemove,
+  canEdit,
+}: PaneProps) {
   const [isEditor, setIsEditor] = useState(true);
 
   const toggleEditor = () => setIsEditor(!isEditor);
@@ -21,18 +30,21 @@ export function Pane({ content, onEdit, onRemove, canRemove }: PaneProps) {
     <div className="Pane">
       {isEditor ? (
         <Fragment>
-          <button
-            className="Button Button-float-top-right Button-white"
-            onClick={handleCopy}
-          >
-            copy
-          </button>
+          {canEdit && (
+            <Button
+              className="Pane-float-top-right-button Pane-copy-button"
+              onClick={handleCopy}
+            >
+              copy
+            </Button>
+          )}
           <textarea
             className="Pane-textarea"
             onChange={(e: JSX.TargetedEvent<HTMLTextAreaElement, Event>) =>
               onEdit(e.currentTarget.value)
             }
             value={content}
+            disabled={!canEdit}
           />
         </Fragment>
       ) : (
@@ -43,18 +55,19 @@ export function Pane({ content, onEdit, onRemove, canRemove }: PaneProps) {
       )}
       <div className="Pane-actions">
         {canRemove && (
-          <button
-            className="Button Button-danger"
-            type="button"
-            onClick={onRemove}
-          >
+          <Button className="Button-danger" onClick={onRemove}>
             remove
-          </button>
+          </Button>
         )}
 
-        <button className="Button Pane-float-right-button" type="button" onClick={toggleEditor}>
+        <Button
+          className="Pane-float-right-button"
+          type="button"
+          onClick={toggleEditor}
+          disabled={!canEdit}
+        >
           switch to {isEditor ? 'preview' : 'editor'}
-        </button>
+        </Button>
       </div>
     </div>
   );

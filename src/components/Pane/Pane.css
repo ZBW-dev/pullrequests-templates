@@ -28,3 +28,13 @@
 .Pane-float-right-button {
   margin-left: auto;
 }
+
+.Pane-float-top-right-button {
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
+.Pane-copy-button {
+  padding: 5px;
+}

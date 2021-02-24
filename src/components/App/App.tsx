@@ -1,48 +1,16 @@
 import { h } from 'preact';
-import { useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import {
+  getTemplates,
+  saveTemplate,
+  removeTemplate,
+} from '../../api/templates';
 
-import type { Template, Option } from '../types/common';
-import { Header } from './Header';
-import { Pane } from './Pane';
+import type { Template, Option } from '../../../types/common';
+import { Header } from '../Header/Header';
+import { Pane } from '../Pane/Pane';
 
 import './App.css';
-import './Button.css';
-
-const getTemplates = async () => {
-  const { templates } = await new Promise((r) =>
-    chrome.storage.local.get(['templates'], r),
-  );
-
-  if (!templates) {
-    return {};
-  }
-
-  return templates;
-};
-
-const saveTemplate = async ({
-  name,
-  content,
-}: {
-  name: string;
-  content: string;
-}) => {
-  const templates = await getTemplates();
-
-  templates[String(name)] = content;
-
-  chrome.storage.local.set({ templates });
-};
-
-const removeTemplate = async ({ name }: { name: string }) => {
-  const templates = await getTemplates();
-
-  if (templates[name]) {
-    delete templates[name];
-  }
-
-  chrome.storage.local.set({ templates });
-};
 
 function App() {
   const [templates, setTemplates] = useState<{ [key: string]: string }>({});
@@ -51,14 +19,15 @@ function App() {
   const [isEdited, setIsEdited] = useState(false);
   const [template, setTemplate] = useState('');
   const [content, setContent] = useState(() => templates[template]);
+  const templateRef = useRef(null);
 
-  const handleTemplateAdd = () => {
+  const handleAdd = () => {
     setIsNew(true);
     setContent('');
     setTemplate('');
   };
 
-  const handleTemplateRemove = () => {
+  const handleRemove = () => {
     const currentIndex = options.findIndex(
       (option) => option.value === template,
     );
@@ -75,35 +44,39 @@ function App() {
     });
   };
 
-  const handleTemplateChange = (template: Template) => {
+  const handleChange = (template: Template) => {
     setTemplate(template);
     setContent(templates[template] || '');
+    setIsEdited(true);
+
+    if (!template) {
+      setIsEdited(false);
+    }
 
     if (templates[template] && content !== templates[template]) {
       setIsEdited(false);
     }
   };
 
-  const handleTemplateEdit = (nextContent: string) => {
+  const handleEdit = (nextContent: string) => {
     setIsEdited(true);
     setContent(nextContent);
   };
 
-  const fetchTemplates = () => {
-    return getTemplates().then((templates) => {
-      const options: Option[] = Object.keys(templates).map((template) => ({
-        label: template,
-        value: template,
-      }));
+  const fetchTemplates = useCallback(async () => {
+    const templates = await getTemplates();
+    const options: Option[] = Object.keys(templates).map((template) => ({
+      label: template,
+      value: template,
+    }));
 
-      setOptions(options);
-      setTemplates(templates);
+    setOptions(options);
+    setTemplates(templates);
 
-      return templates;
-    });
-  };
+    return templates;
+  }, []);
 
-  const handleTemplateSave = () => {
+  const handleSave = () => {
     saveTemplate({ name: template, content }).then(() => {
       fetchTemplates().then(() => {
         setTemplate(template);
@@ -111,6 +84,18 @@ function App() {
         setIsEdited(false);
         setIsNew(false);
       });
+    });
+  };
+
+  const handleCancel = () => {
+    setIsNew(false);
+    setIsEdited(false);
+
+    fetchTemplates().then((templates) => {
+      const template = Object.keys(templates)[0];
+
+      setTemplate(template);
+      setContent(templates[template]);
     });
   };
 
@@ -123,23 +108,27 @@ function App() {
     });
   }, []);
 
+  const hasTemplates = options.length > 0;
+
   return (
     <div className="App">
       <Header
         template={template}
         isNew={isNew}
-        isEdited={isEdited}
+        isEdited={hasTemplates && isEdited}
         options={options}
-        onTemplateAdd={handleTemplateAdd}
-        onTemplateChange={handleTemplateChange}
-        onTemplateSave={handleTemplateSave}
+        onAdd={handleAdd}
+        onChange={handleChange}
+        onSave={handleSave}
+        onCancel={handleCancel}
       />
 
       <Pane
         content={content}
-        onEdit={handleTemplateEdit}
-        canRemove={!isNew && options.length > 1}
-        onRemove={handleTemplateRemove}
+        onEdit={handleEdit}
+        canEdit={isNew || hasTemplates}
+        canRemove={options.length > 1 && !isNew}
+        onRemove={handleRemove}
       />
     </div>
   );

@@ -9,14 +9,10 @@
   text-decoration: underline;
 }
 
-.Button-float-top-right {
-  position: absolute;
-  top: 5px;
-  right: 0;
-}
-
-.Button-white {
-  padding: 5px;
+.Button:disabled {
+  color: gray;
+  text-decoration: none;
+  cursor: default;
 }
 
 .Button-danger {

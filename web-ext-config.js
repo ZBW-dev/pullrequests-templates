@@ -2,7 +2,8 @@ module.exports =
 {
   "run": {
     "target": [
-      "chromium"
+      "chromium",
+      "firefox"
     ]
   },
   "sourceDir": "build"
