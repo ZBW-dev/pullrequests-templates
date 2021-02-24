@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '14'
       - run: npm ci
-      - run: npm build
+      - run: npm run build
 
       - name: Sign the web-ext
         uses: saphareas/sign-web-extension-action@master
