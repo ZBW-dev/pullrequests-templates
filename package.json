@@ -4,8 +4,7 @@
   "description": "Minimal demo for usage of snowpack-web-ext-plugin to create a browser extension with a Popup running a Preact App.",
   "scripts": {
     "start": "cross-env NODE_ENV=develop snowpack build --watch",
-    "build": "mkdir build && cross-env NODE_ENV=production snowpack build",
-    "sign": "web-ext sign --api-key user:16698091:504 --api-secret 513a7987ab2899d6f847aa811a2f1f76afa1b83e0212769cac4db83d82b3884f",
+    "build": "cross-env NODE_ENV=production snowpack build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx}\""
@@ -28,6 +27,7 @@
     "cross-env": "7.0.3",
     "prettier": "^2.0.5",
     "snowpack": "^2.18.4",
+    "snowpack-plugin-copy": "^1.0.1",
     "snowpack-plugin-web-ext": "0.1.2",
     "typescript": "^4.0.3",
     "webextension-polyfill-ts": "^0.25.0"
