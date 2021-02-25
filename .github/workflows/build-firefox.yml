@@ -15,18 +15,9 @@ jobs:
         uses: actions/checkout@main
 
       - name: Set the value
-        id: step_one
-        run: |
-          TEMP=`[[ $(git describe --tags) =~ "-beta.*" ]]  && echo true || echo false`
-      - name: Set the value
-        id: step_two
-        run: |
-          echo $TEMP
-
-      - name: Set the value
         id: step_three
         run: |
-         NAME=$(git describe --tags) &&  TEMP=`[[ $NAME =~ "-beta.*" ]]  && echo true || echo false` && echo "IS_PRE_RELEASE=$TEMP" >> $GITHUB_ENV
+         NAME=$(git describe --tags) && echo $NAME &&  TEMP=`[[ $NAME =~ "-beta.*" ]]  && echo true || echo false` && echo $TEMP && echo "IS_PRE_RELEASE=$TEMP" >> $GITHUB_ENV
 
       - name: Set the value
         id: step_four
