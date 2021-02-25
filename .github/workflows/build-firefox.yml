@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+    tags:
+      - v*.*
+    tags-ignore:
+      - v*.*-beta.*
 
 jobs:
   publish-to-amo:
@@ -23,6 +27,6 @@ jobs:
         uses: saphareas/sign-web-extension-action@master
         with:
           web-ext-id: "{91bd6831-f5f6-4a56-85e2-67ae48116078}"
-          sign-listed: false
+          sign-listed: true
           amo-api-key: ${{ secrets.AMO_API_KEY }}
           amo-api-secret: ${{ secrets.AMO_API_SECRET }}
