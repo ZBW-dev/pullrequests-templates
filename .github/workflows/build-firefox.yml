@@ -14,27 +14,22 @@ jobs:
       - name: Pull and checkout source
         uses: actions/checkout@main
 
-      - name: Set the value
-        id: step_three
+      - name: Set IS_RELEASE value
+        id: set_is_release
         run: |
-         NAME=$(git describe --tags) && echo $NAME &&  TEMP=`[[ $NAME =~ "-beta" ]]  && echo true || echo false` && echo $TEMP && echo "IS_PRE_RELEASE=$TEMP" >> $GITHUB_ENV
+         TAG_NAME=$(git describe --tags) && TEMP=`[[ $TAG_NAME =~ "-beta" ]] && echo false || echo true` && echo "IS_RELEASE=$TEMP" >> $GITHUB_ENV
 
-      - name: Set the value
-        id: step_four
-        run: |
-          echo "${{ env.IS_PRE_RELEASE }}" # This will output 'yellow'
+      - name: Setup and build extension
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run build
 
-      # - name: Setup and build extension
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '14'
-      # - run: npm ci
-      # - run: npm run build
-
-      # - name: Sign the web-ext
-      #   uses: saphareas/sign-web-extension-action@master
-      #   with:
-      #     web-ext-id: "{91bd6831-f5f6-4a56-85e2-67ae48116078}"
-      #     sign-listed: true
-      #     amo-api-key: ${{ secrets.AMO_API_KEY }}
-      #     amo-api-secret: ${{ secrets.AMO_API_SECRET }}
+      - name: Sign the web-ext
+        uses: saphareas/sign-web-extension-action@master
+        with:
+          web-ext-id: "{91bd6831-f5f6-4a56-85e2-67ae48116078}"
+          sign-listed: ${{ env.IS_RELEASE }}
+          amo-api-key: ${{ secrets.AMO_API_KEY }}
+          amo-api-secret: ${{ secrets.AMO_API_SECRET }}
