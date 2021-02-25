@@ -1,10 +1,11 @@
 {
   "name": "snowpack-plugin-web-ext-chrome-popup-demo",
-  "version": "0.0.2",
+  "version": "0.0.3-beta.3",
   "description": "Minimal demo for usage of snowpack-web-ext-plugin to create a browser extension with a Popup running a Preact App.",
   "scripts": {
     "start": "cross-env NODE_ENV=develop snowpack build --watch",
     "build": "cross-env NODE_ENV=production snowpack build",
+    "release": "bump manifest.json package.json package-lock.json --tag \"v%s\" --push",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx}\""
@@ -16,6 +17,7 @@
     "web-ext": "^5.4.1"
   },
   "devDependencies": {
+    "@jsdevtools/version-bump-prompt": "^6.1.0",
     "@prefresh/snowpack": "^2.0.1",
     "@snowpack/plugin-dotenv": "^2.0.5",
     "@snowpack/plugin-typescript": "^1.1.1",
