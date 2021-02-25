@@ -2,9 +2,9 @@ name: Builds, signs and publishes the WebExtension
 on:
   push:
     branches:
-      - main
+      - "!*"
     tags:
-      - '!v**-beta'
+      - 'v*'
 
 jobs:
   publish-to-amo:
