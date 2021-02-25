@@ -26,8 +26,7 @@ jobs:
       - name: Set the value
         id: step_three
         run: |
-          echo "IS_PRE_RELEASE=yellow" >> $GITHUB_ENV
-          echo "${{ env.IS_PRE_RELEASE }}" # This will output 'yellow'
+          TEMP=`[[ $(git describe --tags) =~ "-beta.*" ]]  && echo true || echo false` && echo "IS_PRE_RELEASE=$TEMP" >> $GITHUB_ENV
 
       - name: Set the value
         id: step_four
