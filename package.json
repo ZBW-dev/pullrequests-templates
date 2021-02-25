@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=develop snowpack build --watch",
     "build": "cross-env NODE_ENV=production snowpack build",
-    "release": "bump manifest.json package.json package-lock.json --tag \"v%s\" --push",
+    "release": "bump package.json package-lock.json --tag \"v%s\" --push",
+    "update:manifest": "node scripts/update-manifest.js",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx}\""
@@ -27,6 +28,7 @@
     "@web/test-runner": "^0.10.0",
     "chai": "^4.2.0",
     "cross-env": "7.0.3",
+    "edit-json-file": "^1.5.0",
     "prettier": "^2.0.5",
     "snowpack": "^2.18.4",
     "snowpack-plugin-copy": "^1.0.1",
