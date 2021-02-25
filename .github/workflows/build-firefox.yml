@@ -4,7 +4,7 @@ on:
     branches:
       - main
     tags:
-      - v*.*.*
+      - '!v**-beta'
 
 jobs:
   publish-to-amo:
