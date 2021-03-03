@@ -1,7 +1,7 @@
 name: Builds, signs and publishes the WebExtension
 on:
   release:
-    types: [published]
+    types: [created]
   # push:
   #   branches: main
 
