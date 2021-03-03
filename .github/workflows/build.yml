@@ -22,15 +22,16 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm ci
-      - run: npm run build
-      - run: npm run update:manifest
-      - run: ls build
-    - name: Persist /build between jobs
-      uses: actions/upload-artifact@v2
-      with:
-        name: build
-        path: build
+        - run: npm ci
+        - run: npm run build
+        - run: npm run update:manifest
+        - run: ls build/
+
+      - name: Persist /build between jobs
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
 
   publish-to-amo:
     needs: build
