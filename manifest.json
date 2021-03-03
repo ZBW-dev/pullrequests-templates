@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Pull requests templates",
-  "version": "0.0.3-beta.29",
+  "version": "0.0.3-beta.30",
   "description": "Have multiple pull requests templates at hand.",
   "permissions": [
     "storage"
