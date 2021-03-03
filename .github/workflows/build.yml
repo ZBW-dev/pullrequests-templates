@@ -1,9 +1,10 @@
 name: Builds, signs and publishes the WebExtension
 on:
-  release:
-    types: [created]
-  # push:
-  #   branches: main
+  push:
+    branches:
+      - "!*"
+    tags:
+      - 'v*'
 
 jobs:
   build:
