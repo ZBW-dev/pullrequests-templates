@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks';
 import snarkdown from 'snarkdown';
 
 import { Button } from '../Button/Button';
+import { Textarea } from '../Textarea/Textarea';
 
 import './Pane.css';
 
@@ -38,14 +39,7 @@ export function Pane({
               copy
             </Button>
           )}
-          <textarea
-            className="Pane-textarea"
-            onChange={(e: JSX.TargetedEvent<HTMLTextAreaElement, Event>) =>
-              onEdit(e.currentTarget.value)
-            }
-            value={content}
-            disabled={!canEdit}
-          />
+          <Textarea onChange={onEdit} value={content} disabled={!canEdit} />
         </Fragment>
       ) : (
         <div

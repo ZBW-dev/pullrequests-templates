@@ -13,10 +13,12 @@
     "version": "node scripts/update-manifest.js"
   },
   "dependencies": {
+    "jotai": "^0.15.0",
     "json-templates": "^4.1.0",
     "preact": "^10.0.0",
     "snarkdown": "^2.0.0",
-    "web-ext": "^5.4.1"
+    "web-ext": "^5.4.1",
+    "wouter-preact": "^2.7.3"
   },
   "devDependencies": {
     "@jsdevtools/version-bump-prompt": "^6.1.0",

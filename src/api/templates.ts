@@ -6,7 +6,7 @@ export const getTemplates = async (): Promise<Templates> => {
   const { templates } = await browser.storage.local.get(['templates']);
 
   if (!templates) {
-    return {}
+    return {};
   }
 
   return templates;
@@ -35,7 +35,7 @@ export const removeTemplate = async ({
 }): Promise<void> => {
   const templates = await getTemplates();
 
-  if (templates[name]) {
+  if (typeof templates[name] !== 'undefined') {
     delete templates[name];
   }
 
