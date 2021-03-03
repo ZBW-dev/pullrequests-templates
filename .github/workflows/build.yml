@@ -44,9 +44,9 @@ jobs:
           name: build
           path: build
 
-      - name: Copy manifest.json
+      - name: Copy web-ext-config.js
         run: |
-          cp build/manifest.json ./manifest.json
+          cp build/web-ext-config.js ./web-ext-config.js
 
       - name: Sign and publish
         uses: saphareas/sign-web-extension-action@master

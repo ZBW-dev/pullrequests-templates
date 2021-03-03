@@ -18,6 +18,10 @@ module.exports = {
                 source: 'manifest.json',
                 destination: 'build',
               },
+              {
+                source: 'web-ext-config.js',
+                destination: 'build',
+              },
             ],
           },
         ],
