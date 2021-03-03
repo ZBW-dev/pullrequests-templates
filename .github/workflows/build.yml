@@ -70,7 +70,7 @@ jobs:
           dest: build.zip
 
       - name: Publish
-        uses: Klemensas/chrome-extension-upload-action@$VERSION
+        uses: Passiverecords/chrome-extension-upload-action@1.4.1
         with:
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
