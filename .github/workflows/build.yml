@@ -25,13 +25,22 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run update:manifest
-      - run: ls
+      - run: ls -a /build
+    - name: Persist /build between jobs
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: /build
 
   publish-to-amo:
     needs: build
     name: Sign and publish extension to firefox addons 
     runs-on: ubuntu-latest
     steps:
+      - name: Get /build data
+        uses: actions/download-artifact@v2
+        with:
+          name: build
       - name: Sign and publish
         run: ls
         # uses: saphareas/sign-web-extension-action@master
@@ -45,6 +54,10 @@ jobs:
     name: Sign and publish extension to chrome web store
     runs-on: ubuntu-latest
     steps:
+      - name: Get /build data
+        uses: actions/download-artifact@v2
+        with:
+          name: build
       - name: Zip extension
         id: set_is_release
         run: ls
