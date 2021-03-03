@@ -62,6 +62,11 @@ jobs:
           name: build
           path: build
       - name: Zip extension
+        uses: papeloto/action-zip@v1
+          with:
+            files: build/
+            dest: build.zip
+      - name: Check files
         id: set_is_release
         run: ls
     #  - name:
