@@ -1,9 +1,9 @@
 name: Builds, signs and publishes the WebExtension
 on:
-  # release:
-  #   types: [published]
-  push:
-    branches: main
+  release:
+    types: [published]
+  # push:
+  #   branches: main
 
 jobs:
   build:
@@ -13,11 +13,11 @@ jobs:
       - name: Pull and checkout source
         uses: actions/checkout@main
 
-      # - name: Set IS_RELEASE value
-      #   id: set_is_release
-      #   run: |
-      #    TAG_NAME=$(git describe --tags) && TEMP=`[[ $TAG_NAME =~ "-beta" ]] && echo false || echo true` && echo "IS_RELEASE=$TEMP" >> $GITHUB_ENV
-
+      - name: Set IS_RELEASE value
+        id: set_is_release
+        run: |
+         TAG_NAME=$(git describe --tags) && TEMP=`[[ $TAG_NAME =~ "-beta" ]] && echo false || echo true` && echo "IS_RELEASE=$TEMP" >> $GITHUB_ENV
+      
       - name: Setup and build extension
         uses: actions/setup-node@v2
         with:
@@ -43,14 +43,14 @@ jobs:
         with:
           name: build
           path: build
+
       - name: Sign and publish
-        run: ls
-        # uses: saphareas/sign-web-extension-action@master
-        # with:
-        #   web-ext-id: "{91bd6831-f5f6-4a56-85e2-67ae48116078}"
-        #   sign-listed: ${{ env.IS_RELEASE }}
-        #   amo-api-key: ${{ secrets.AMO_API_KEY }}
-        #   amo-api-secret: ${{ secrets.AMO_API_SECRET }}
+        uses: saphareas/sign-web-extension-action@master
+        with:
+          web-ext-id: "{91bd6831-f5f6-4a56-85e2-67ae48116078}"
+          sign-listed: ${{ env.IS_RELEASE }}
+          amo-api-key: ${{ secrets.AMO_API_KEY }}
+          amo-api-secret: ${{ secrets.AMO_API_SECRET }}
   publish-to-cws:
     needs: build
     name: Sign and publish extension to chrome web store
@@ -61,14 +61,20 @@ jobs:
         with:
           name: build
           path: build
+
       - name: Zip extension
         uses: papeloto/action-zip@v1
         with:
           files: build/
           dest: build.zip
-      - name: Check files
-        id: set_is_release
-        run: ls
-    #  - name:
 
+      - name: Publish
+        uses: Klemensas/chrome-extension-upload-action@$VERSION
+        with:
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          file-name: "build.zip"
+          app-id: "ajgamcgebnhahghjlclajdplkbagigch"
+          publish: ${{ env.IS_RELEASE }}
   
