@@ -1,0 +1,53 @@
+name: Builds, signs and publishes the WebExtension
+on:
+  # release:
+  #   types: [published]
+  push:
+    branches: main
+
+jobs:
+  build:
+    name: Build the extension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull and checkout source
+        uses: actions/checkout@main
+
+      - name: Set IS_RELEASE value
+        id: set_is_release
+        run: |
+         TAG_NAME=$(git describe --tags) && TEMP=`[[ $TAG_NAME =~ "-beta" ]] && echo false || echo true` && echo "IS_RELEASE=$TEMP" >> $GITHUB_ENV
+
+      - name: Setup and build extension
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run update:manifest
+      - run: ls
+
+  publish-to-amo:
+    needs: build
+    name: Sign and publish extension to firefox addons 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sign and publish
+        run: ls
+        # uses: saphareas/sign-web-extension-action@master
+        # with:
+        #   web-ext-id: "{91bd6831-f5f6-4a56-85e2-67ae48116078}"
+        #   sign-listed: ${{ env.IS_RELEASE }}
+        #   amo-api-key: ${{ secrets.AMO_API_KEY }}
+        #   amo-api-secret: ${{ secrets.AMO_API_SECRET }}
+  publish-to-cws:
+    needs: build
+    name: Sign and publish extension to chrome web store
+    runs-on: ubuntu-latest
+    steps:
+      - name: Zip extension
+        id: set_is_release
+        run: ls
+    #  - name:
+
+  
